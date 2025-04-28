@@ -1,0 +1,17 @@
+﻿<h3>ChildComponent2</h3>
+
+@if(Personne is null)
+{
+    <p>No data</p>
+}
+else
+{
+    <p>@Personne.Nom</p>
+    <p>@Personne.Prenom</p>
+}
+
+
+@code {
+    [Parameter]
+    public Personne? Personne { get; set; }
+}

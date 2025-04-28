@@ -1,0 +1,20 @@
+﻿@page "/Exemple5"
+<h3>Exemple5</h3>
+
+<ChildComponent3 NewValue="OnNewValue" />
+
+@if (_count is not 0)
+{
+    <p>j'ai recu une @_count (ière/ème) valeur : @_value</p>
+}
+
+@code {
+    private int _count;
+    private int _value;
+
+    public void OnNewValue(int value)
+    {
+        _count++;
+        _value = value;
+    }
+}

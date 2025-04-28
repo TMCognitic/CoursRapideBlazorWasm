@@ -1,0 +1,38 @@
+﻿@implements IDisposable
+
+<h3>ChildComponent4</h3>
+
+@if(_message is not null)
+{
+    <p>@_message</p>
+}
+
+<button @onclick="OnClick">Click on me</button> 
+
+@code {
+    private string? _message;
+
+    protected override void OnInitialized()
+    {
+        Mediator<string>.Instance.Broadcaster += OnMessage;
+    }
+
+    private void OnMessage(object sender, string message)
+    {
+        if (sender == this)
+            return;
+
+        _message = message;
+        StateHasChanged();
+    }
+
+    private void OnClick()
+    {
+        Mediator<string>.Instance.Send(this, "Merci du message");
+    }
+
+    public void Dispose()
+    {
+        Mediator<string>.Instance.Broadcaster -= OnMessage;
+    }
+}

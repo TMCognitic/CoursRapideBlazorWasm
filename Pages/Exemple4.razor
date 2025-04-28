@@ -1,0 +1,11 @@
+﻿@page "/Exemple4"
+
+<h3>Passer une donnée au composant enfant</h3>
+
+<ChildComponent1 X="@maVariable" />
+<ChildComponent2 Personne="@personne" />
+
+@code {
+    private int maVariable = 42;
+    private Personne personne = new Personne("Doe", "John");    
+}

@@ -1,0 +1,15 @@
+﻿<h3>ChildComponent3</h3>
+
+<button @onclick="GenerateValueToSend" >Generate a value to Send</button>
+
+@code {
+    [Parameter]
+    public EventCallback<int> NewValue { get; set; }
+
+    public async Task GenerateValueToSend()
+    {
+        int value = Random.Shared.Next();
+
+        await NewValue.InvokeAsync(value);
+    }
+}

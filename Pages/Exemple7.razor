@@ -1,0 +1,69 @@
+﻿@page "/exemple7"
+
+@inject IJSRuntime _js
+
+<h3>Exemple7</h3>
+
+<button @onclick="WriteNom">Write Nom in LocalStorage</button>
+
+<button @onclick="ReadNom">Read Nom from LocalStorage</button>
+
+@if (_nom is not null)
+{
+    <h1>@_nom</h1>
+}
+
+<br />
+
+<button @onclick="WritePersonne">Write Personne in LocalStorage</button>
+
+<button @onclick="ReadPersonne">Read Personne from LocalStorage</button>
+
+
+@if (_personne is not null)
+{
+    <h1>@_personne.Nom @_personne.Prenom</h1>
+}
+
+<br />
+
+<button @onclick="Clear">Clear</button>
+
+@code {
+    private string? _nom;
+    private Personne? _personne;
+
+    public async Task WriteNom()
+    {
+        await _js.InvokeVoidAsync("localStorage.setItem",
+            new object[] { "Nom", "Doe" });
+    }
+
+    public async Task ReadNom()
+    {
+        _nom =await _js.InvokeAsync<string>("localStorage.getItem",
+            "Nom");
+    }
+
+    public async Task WritePersonne()
+    {
+        await _js.InvokeVoidAsync("localStorage.setItem",
+            new object[] { "Personne", JsonSerializer.Serialize(new Personne("Doe", "Jane")) });
+    }
+
+    public async Task ReadPersonne()
+    {
+
+        string json = await _js.InvokeAsync<string>("localStorage.getItem",
+            "Personne");
+
+        _personne = JsonSerializer.Deserialize<Personne?>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+    }
+
+    public async Task Clear()
+    {
+        _personne = null;
+        _nom = null;
+        await _js.InvokeVoidAsync("localStorage.clear");
+    }
+}
